@@ -1,3 +1,4 @@
+import ellipse.EllipseDrawer;
 import line.BresenhamLineDrawer;
 import line.DDALineDrawer;
 import line.LineDrawer;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class DrawTester extends JPanel  {
+
     @Override
     public void paint(Graphics basicGraphics) {
         BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -25,31 +27,37 @@ public class DrawTester extends JPanel  {
 
     private void launchTests(PixelDrawer pixelDrawer) {
         int snowflakeLinesAmount = 32;
-        int snowflakeRadius = 50;
+        int defaultRadius = 50;
         drawSnowflake(
                 new DDALineDrawer(pixelDrawer),
-                snowflakeRadius,
-                snowflakeRadius,
-                snowflakeRadius,
+                defaultRadius,
+                defaultRadius,
+                defaultRadius,
                 snowflakeLinesAmount,
                 Color.BLACK
         );
         drawSnowflake(
                 new BresenhamLineDrawer(pixelDrawer),
-                snowflakeRadius * 3,
-                snowflakeRadius,
-                snowflakeRadius,
+                defaultRadius * 3,
+                defaultRadius,
+                defaultRadius,
                 snowflakeLinesAmount,
                 Color.RED
         );
         drawSnowflake(
                 new WuLineDrawer(pixelDrawer),
-                snowflakeRadius,
-                snowflakeRadius * 3,
-                snowflakeRadius,
+                defaultRadius,
+                defaultRadius * 3,
+                defaultRadius,
                 snowflakeLinesAmount,
                 Color.BLUE
         );
+
+        int circleRadius = 50;
+        EllipseDrawer ellipseDrawer = new EllipseDrawer(pixelDrawer);
+        ellipseDrawer.drawEllipse(defaultRadius * 5, defaultRadius, defaultRadius, Color.BLACK);
+        ellipseDrawer.drawCircle(defaultRadius * 7, defaultRadius, defaultRadius, true, Color.MAGENTA);
+        ellipseDrawer.drawEllipse(defaultRadius * 6, defaultRadius * 3, defaultRadius * 2, defaultRadius, Color.GREEN);
 
 
     }
