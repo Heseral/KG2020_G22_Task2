@@ -19,7 +19,7 @@ public class DrawTester extends JPanel implements MouseMotionListener {
     private Point2D wuLineTestPosition = new Point(0, 0);
 
     public DrawTester() {
-        addMouseMotionListener(this);
+        //addMouseMotionListener(this);
     }
 
     @Override

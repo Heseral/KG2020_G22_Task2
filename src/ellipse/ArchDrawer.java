@@ -46,49 +46,50 @@ public class ArchDrawer {
         int x = 0;
         int y = radius;
         int gap = 0;
-        int delta = (2 - 2 * radius);
+        int delta = 2 * radius;
         int angle;
         while (y >= 0) {
             if (x0 + x >= 0 && y0 - y >= 0) {
-                    angle = getAngle(x0, y0, x0 + x, y0 - y);
-                    if ((angle >= startAngle) && (angle <= startAngle + sweepAngle)) {
-                        if (0 <= angle && angle <= 90) {
-                            pixelDrawer.colorPixel(x0 + x, y0 - y, color);
-                        }
+                angle = getAngle(x0, y0, x0 + x, y0 - y);
+                if ((angle >= startAngle) && (angle <= startAngle + sweepAngle)) {
+                    if (0 <= angle && angle <= 90) {
+                        pixelDrawer.colorPixel(x0 + x, y0 - y, color);
                     }
+                }
             }
 
             if (x0 + x >= 0 && y0 + y >= 0) {
-                    angle = getAngle(x0, y0, x0 + x, y0 + y);
-                    if ((angle >= startAngle) && (angle <= startAngle + sweepAngle)) {
-                        if (90 < angle && angle <= 180) {
-                            pixelDrawer.colorPixel(x0 + x, y0 + y, color);
-                        }
+                angle = getAngle(x0, y0, x0 + x, y0 + y);
+                if ((angle >= startAngle) && (angle <= startAngle + sweepAngle)) {
+                    if (90 < angle && angle <= 180) {
+                        pixelDrawer.colorPixel(x0 + x, y0 + y, color);
                     }
+                }
             }
 
             if (x0 - x >= 0 && y0 + y >= 0) {
-                    angle = getAngle(x0, y0, x0 - x, y0 + y);
-                    if ((angle >= startAngle) && (angle <= startAngle + sweepAngle)) {
-                        if (180 < angle && angle <= 270) {
-                            pixelDrawer.colorPixel(x0 - x, y0 + y, color);
-                        }
+                angle = getAngle(x0, y0, x0 - x, y0 + y);
+                if ((angle >= startAngle) && (angle <= startAngle + sweepAngle)) {
+                    if (180 < angle && angle <= 270) {
+                        pixelDrawer.colorPixel(x0 - x, y0 + y, color);
                     }
+                }
             }
 
             if (x0 - x >= 0 && y0 - y >= 0) {
-                    angle = getAngle(x0, y0, x0 - x, y0 - y);
-                    if ((angle >= startAngle) && (angle <= startAngle + sweepAngle)) {
-                        if (270 < angle && angle <= 360) {
-                            pixelDrawer.colorPixel(x0 - x, y0 - y, color);
-                        }
+                angle = getAngle(x0, y0, x0 - x, y0 - y);
+                if ((angle >= startAngle) && (angle <= startAngle + sweepAngle)) {
+                    if (270 < angle && angle <= 360) {
+                        pixelDrawer.colorPixel(x0 - x, y0 - y, color);
                     }
+                }
             }
 
             gap = 2 * (delta + y) - 1;
             if (delta < 0 && gap <= 0) {
-                x++;
                 delta += 2 * x + 1;
+                x++;
+
                 continue;
             }
             if (delta > 0 && gap > 0) {
@@ -96,9 +97,10 @@ public class ArchDrawer {
                 delta -= 2 * y + 1;
                 continue;
             }
-            x++;
-            delta += 2 * (x - y);
             y--;
+            delta += 2 * (x - y);
+            x++;
+
         }
     }
 }
