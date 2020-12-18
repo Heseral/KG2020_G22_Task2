@@ -1,5 +1,7 @@
 package pixel_drawer;
 
+import task2.PixelDrawer;
+
 import java.awt.*;
 
 public class GraphicsPixelDrawer implements PixelDrawer {

@@ -1,6 +1,6 @@
 package line;
 
-import pixel_drawer.PixelDrawer;
+import task2.PixelDrawer;
 
 import java.awt.*;
 import java.awt.image.ColorModel;
@@ -37,8 +37,8 @@ public class WuLineDrawer implements LineDrawer {
             x1 = temp;
         }
 
-        pixelDrawer.colorPixel(x1, y1, color, isLineVerticallyOriented);
-        pixelDrawer.colorPixel(x2, y2, color, isLineVerticallyOriented);
+        pixelDrawer.colorPixel(x1, y1, color);//, isLineVerticallyOriented);
+        pixelDrawer.colorPixel(x2, y2, color);//, isLineVerticallyOriented);
         double dx = x2 - x1;
         double dy = y2 - y1;
         double slopeCoefficient = dy / dx;
@@ -52,8 +52,8 @@ public class WuLineDrawer implements LineDrawer {
                             color.getGreen(),
                             color.getBlue(),
                             (int) (255 * (1 - y + (int) y))
-                    ),
-                    isLineVerticallyOriented
+                    )//,
+                    //isLineVerticallyOriented
             );
             pixelDrawer.colorPixel(
                     x,
@@ -63,8 +63,8 @@ public class WuLineDrawer implements LineDrawer {
                             color.getGreen(),
                             color.getBlue(),
                             (int) (255 * (y - (int) y))
-                    ),
-                    isLineVerticallyOriented
+                    )//,
+                    //isLineVerticallyOriented
             );
             y += slopeCoefficient;
         }

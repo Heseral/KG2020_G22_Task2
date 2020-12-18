@@ -5,30 +5,24 @@ import line.DDALineDrawer;
 import line.LineDrawer;
 import line.WuLineDrawer;
 import pixel_drawer.GraphicsPixelDrawer;
-import pixel_drawer.PixelDrawer;
+import task2.PixelDrawer;
+import task2.graphics_impl.PFWDGI;
+import task2.testing.TestArcs;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-public class DrawTester extends JPanel implements MouseMotionListener {
+public class DrawTester extends JPanel {
     private Point2D wuLineTestPosition = new Point(0, 0);
-
-    public DrawTester() {
-        //addMouseMotionListener(this);
-    }
 
     @Override
     public void paint(Graphics basicGraphics) {
-        int defaultRadius = 50;
         BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics graphics = bufferedImage.createGraphics();
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, getWidth(), getHeight());
-        graphics.setColor(Color.BLACK);
         graphics.setColor(Color.BLACK);
         PixelDrawer pixelDrawer = new GraphicsPixelDrawer(graphics);
         launchTests(pixelDrawer);
@@ -37,6 +31,17 @@ public class DrawTester extends JPanel implements MouseMotionListener {
     }
 
     private void launchTests(PixelDrawer pixelDrawer) {
+        /*try {
+            TestArcs.startTest(
+                    new PFWDGI(),
+                    TestArcs.IMG_DIFF,
+                    TestArcs.TEST_ARC | TestArcs.TEST_FILL,
+                    true,
+                    "."
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
         int snowflakeLinesAmount = 32;
         int defaultRadius = 50;
         drawSnowflake(
@@ -66,15 +71,14 @@ public class DrawTester extends JPanel implements MouseMotionListener {
         );
 
         ArcDrawer arcDrawer = new ArcDrawer(pixelDrawer);
-        arcDrawer.drawArc(defaultRadius * 3, defaultRadius * 3, defaultRadius, defaultRadius, -120, 30, Color.ORANGE);
+        arcDrawer.drawArc(defaultRadius * 3, defaultRadius * 3, defaultRadius, defaultRadius, 20, 370, Color.ORANGE);
+        arcDrawer.fillArc(defaultRadius * 3, defaultRadius * 3, defaultRadius, defaultRadius, 90, 160, Color.PINK);
 
         EllipseDrawer ellipseDrawer = new EllipseDrawer(pixelDrawer);
         ellipseDrawer.drawEllipse(defaultRadius * 5, defaultRadius, defaultRadius, Color.BLACK);
         ellipseDrawer.drawCircle(defaultRadius * 7, defaultRadius, defaultRadius, true, Color.MAGENTA);
         ellipseDrawer.drawEllipse(defaultRadius * 6, defaultRadius * 3, defaultRadius * 2, defaultRadius, Color.GREEN);
-
-        wuLineDrawer.drawLine((int) (GlobalVar.SCREEN_WIDTH / 2), (int) (GlobalVar.SCREEN_HEIGHT / 2), (int) wuLineTestPosition.getX(), (int) wuLineTestPosition.getY(), Color.BLACK);
-
+        ellipseDrawer.fillEllipse(defaultRadius * 9, defaultRadius, defaultRadius, defaultRadius, Color.DARK_GRAY);
     }
 
     private void drawSnowflake(LineDrawer lineDrawer, int centerX, int centerY, int radius, int amount, Color color) {
@@ -86,16 +90,5 @@ public class DrawTester extends JPanel implements MouseMotionListener {
             double dy = radius * Math.sin(a);
             lineDrawer.drawLine(centerX, centerY, centerX + (int) dx, centerY + (int) dy, color);
         }
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent mouseEvent) {
-
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent mouseEvent) {
-        wuLineTestPosition = new Point(mouseEvent.getX(), mouseEvent.getY());
-        repaint();
     }
 }

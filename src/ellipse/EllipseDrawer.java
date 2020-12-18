@@ -1,6 +1,6 @@
 package ellipse;
 
-import pixel_drawer.PixelDrawer;
+import task2.PixelDrawer;
 
 import java.awt.*;
 
@@ -53,10 +53,55 @@ public class EllipseDrawer {
     }
 
     public void fillEllipse(int x0, int y0, int width, int height, Color color) {
+        int y = height;
+        int x = 0;
+        // НАЧАЛО: переменные для облегчения участи процессора. Просто сохраним их, чтобы не пересчитывать каждый раз
+        final int bSquared = height * height;
+        final int aSquared = width * width;
+        final int doubleASquared = aSquared * 2;
+        final int quadrupleASquared = aSquared * 4;
+        final int quadrupleBSquared = bSquared * 4;
+        final int doubleBSquared = bSquared * 2;
+        // КОНЕЦ: переменные для облегчения участи процессора
+        int delta = doubleASquared * ((y - 1) * y) + aSquared + doubleBSquared * (1 - aSquared);
+        final int xFinalLeft;
+        final int xFinalRight;
+        // горизонтально-ориентированные кривые
+        while (aSquared * y > bSquared * x) {
+            for (int yToDraw = y0 - y; yToDraw <= y0 + y; yToDraw++) {
+                pixelDrawer.colorPixel(x0 + x, yToDraw, color);
+                pixelDrawer.colorPixel(x0 - x, yToDraw, color);
+            }
 
+            if (delta >= 0) {
+                y--;
+                delta -= quadrupleASquared * (y);
+            }
+            delta += doubleBSquared * (3 + x * 2);
+            x++;
+        }
+        xFinalLeft = x0 - x + 1;
+        xFinalRight = x0 + x - 1;
+        delta = doubleBSquared * (x + 1) * x + doubleASquared * (y * (y - 2) + 1) + (1 - doubleASquared) * bSquared;
+        // вертикально-ориентированные кривые
+        while (y + 1 > 0) {
+            for (int xToDraw = x0 - x; xToDraw < xFinalLeft; xToDraw++) {
+                pixelDrawer.colorPixel(xToDraw, y0 + y, color);
+                pixelDrawer.colorPixel(xToDraw, y0 - y, color);
+            }
+            for (int xToDraw = x0 + x; xToDraw > xFinalRight; xToDraw--) {
+                pixelDrawer.colorPixel(xToDraw, y0 + y, color);
+                pixelDrawer.colorPixel(xToDraw, y0 - y, color);
+            }
+
+            if (delta <= 0) {
+                x++;
+                delta += quadrupleBSquared * x;
+            }
+            y--;
+            delta += doubleASquared * (3 - y * 2);
+        }
     }
-
-
 
     public void drawEllipse(int x0, int y0, int radius, Color color) {
         drawEllipse(x0, y0, radius, radius, color);

@@ -1,6 +1,6 @@
 package line;
 
-import pixel_drawer.PixelDrawer;
+import task2.PixelDrawer;
 
 import java.awt.*;
 
