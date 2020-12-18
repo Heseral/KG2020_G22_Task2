@@ -1,4 +1,4 @@
-import ellipse.ArchDrawer;
+import ellipse.ArcDrawer;
 import ellipse.EllipseDrawer;
 import line.BresenhamLineDrawer;
 import line.DDALineDrawer;
@@ -8,7 +8,6 @@ import pixel_drawer.GraphicsPixelDrawer;
 import pixel_drawer.PixelDrawer;
 
 import javax.swing.*;
-import javax.swing.text.Position;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -24,10 +23,12 @@ public class DrawTester extends JPanel implements MouseMotionListener {
 
     @Override
     public void paint(Graphics basicGraphics) {
+        int defaultRadius = 50;
         BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics graphics = bufferedImage.createGraphics();
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, getWidth(), getHeight());
+        graphics.setColor(Color.BLACK);
         graphics.setColor(Color.BLACK);
         PixelDrawer pixelDrawer = new GraphicsPixelDrawer(graphics);
         launchTests(pixelDrawer);
@@ -64,8 +65,9 @@ public class DrawTester extends JPanel implements MouseMotionListener {
                 Color.BLUE
         );
 
-        ArchDrawer archDrawer = new ArchDrawer(pixelDrawer);
-        archDrawer.drawArch(defaultRadius * 3, defaultRadius * 3, defaultRadius, -125, 175, Color.ORANGE);
+        ArcDrawer arcDrawer = new ArcDrawer(pixelDrawer);
+        arcDrawer.drawArc(defaultRadius * 3, defaultRadius * 3, defaultRadius, defaultRadius, -120, 30, Color.ORANGE);
+
         EllipseDrawer ellipseDrawer = new EllipseDrawer(pixelDrawer);
         ellipseDrawer.drawEllipse(defaultRadius * 5, defaultRadius, defaultRadius, Color.BLACK);
         ellipseDrawer.drawCircle(defaultRadius * 7, defaultRadius, defaultRadius, true, Color.MAGENTA);

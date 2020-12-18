@@ -52,9 +52,11 @@ public class EllipseDrawer {
         }
     }
 
-    public void fillEllipse() {
+    public void fillEllipse(int x0, int y0, int width, int height, Color color) {
 
     }
+
+
 
     public void drawEllipse(int x0, int y0, int radius, Color color) {
         drawEllipse(x0, y0, radius, radius, color);
