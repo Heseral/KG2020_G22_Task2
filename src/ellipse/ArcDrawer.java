@@ -43,10 +43,11 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         // КОНЕЦ: переменные для облегчения участи процессора
         int delta = doubleASquared * ((y - 1) * y) + aSquared + doubleBSquared * (1 - aSquared);
         int angle;
+        double mod = (double) width / (double) height;
         // горизонтально-ориентированные кривые
         while (aSquared * y > bSquared * x) {
             for (int yToDraw = y0 - y; yToDraw <= y0 + y; yToDraw++) {
-                angle = getAngle(x0, y0, x0 + x, yToDraw);
+                angle = getAngle(x0, y0, x0 + x, yToDraw, mod);
                 if ((angle == -90 || angle == 90) && isValidAngle(angle, startAngle, sweepAngle)) {
                     pixelDrawer.colorPixel(x0 + x - 1, yToDraw, color);
                     pixelDrawer.colorPixel(x0 - x + 1, yToDraw, color);
@@ -54,7 +55,7 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
                 if (isValidAngle(angle, startAngle, sweepAngle)) {
                     pixelDrawer.colorPixel(x0 + x, yToDraw, color);
                 }
-                angle = getAngle(x0, y0, x0 - x, yToDraw);
+                angle = getAngle(x0, y0, x0 - x, yToDraw, mod);
                 if (isValidAngle(angle, startAngle, sweepAngle)) {
                     pixelDrawer.colorPixel(x0 - x, yToDraw, color);
                 }
@@ -72,7 +73,7 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         // вертикально-ориентированные кривые
         while (y + 1 > 0) {
             for (int yToDraw = y0 - y; yToDraw <= y0 + y; yToDraw++) {
-                angle = getAngle(x0, y0, x0 + x, yToDraw);
+                angle = getAngle(x0, y0, x0 + x, yToDraw, mod);
                 if ((angle == -90 || angle == 90) && isValidAngle(angle, startAngle, sweepAngle)) {
                     pixelDrawer.colorPixel(x0 + x - 1, yToDraw, color);
                     pixelDrawer.colorPixel(x0 - x + 1, yToDraw, color);
@@ -83,7 +84,7 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
                 if (isValidAngle(angle, startAngle, sweepAngle)) {
                     pixelDrawer.colorPixel(x0 + x, yToDraw, color);
                 }
-                angle = getAngle(x0, y0, x0 - x, yToDraw);
+                angle = getAngle(x0, y0, x0 - x, yToDraw, mod);
                 if (isValidAngle(angle, startAngle, sweepAngle)) {
                     pixelDrawer.colorPixel(x0 - x, yToDraw, color);
                 }
@@ -129,19 +130,20 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         final int quadrupleBSquared = bSquared * 4;
         final int doubleBSquared = bSquared * 2;
         // КОНЕЦ: переменные для облегчения участи процессора
+        double mod = (double) width / (double) height;
         int delta = doubleASquared * ((y - 1) * y) + aSquared + doubleBSquared * (1 - aSquared);
         // горизонтально-ориентированные кривые
         while (aSquared * y > bSquared * x) {
-            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y + y0)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y + y0, mod)) {
                 getPixelDrawer().colorPixel(x + x0, y + y0, color);
             }
-            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y0 - y)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y0 - y, mod)) {
                 getPixelDrawer().colorPixel(x + x0, y0 - y, color);
             }
-            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y + y0)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y + y0, mod)) {
                 getPixelDrawer().colorPixel(x0 - x, y + y0, color);
             }
-            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y0 - y)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y0 - y, mod)) {
                 getPixelDrawer().colorPixel(x0 - x, y0 - y, color);
             }
 
@@ -155,16 +157,16 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         delta = doubleBSquared * (x + 1) * x + doubleASquared * (y * (y - 2) + 1) + (1 - doubleASquared) * bSquared;
         // вертикально-ориентированные кривые
         while (y + 1 > 0) {
-            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y + y0)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y + y0, mod)) {
                 getPixelDrawer().colorPixel(x + x0, y + y0, color);
             }
-            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y0 - y)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y0 - y, mod)) {
                 getPixelDrawer().colorPixel(x + x0, y0 - y, color);
             }
-            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y + y0)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y + y0, mod)) {
                 getPixelDrawer().colorPixel(x0 - x, y + y0, color);
             }
-            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y0 - y)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y0 - y, mod)) {
                 getPixelDrawer().colorPixel(x0 - x, y0 - y, color);
             }
             if (delta <= 0) {
@@ -176,9 +178,10 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         }
     }
 
-    private int getAngle(int centerX, int centerY, int pointX, int pointY) {
+    private int getAngle(int centerX, int centerY, int pointX, int pointY, double mod) {
         int x = pointX - centerX;
         int y = pointY - centerY;
+        y *= mod;
 
         int a = (int) (Math.atan2(x, y) * 180 / Math.PI) - 90;
 
@@ -193,8 +196,8 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         return angle >= startAngle && angle <= startAngle + sweepAngle;
     }
 
-    private boolean isValidAngle(int startAngle, int sweepAngle, int centerX, int centerY, int pointX, int pointY) {
-        return isValidAngle(getAngle(centerX, centerY, pointX, pointY), startAngle, sweepAngle);
+    private boolean isValidAngle(int startAngle, int sweepAngle, int centerX, int centerY, int pointX, int pointY, double mod) {
+        return isValidAngle(getAngle(centerX, centerY, pointX, pointY, mod), startAngle, sweepAngle);
     }
 
     public PixelDrawer getPixelDrawer() {
