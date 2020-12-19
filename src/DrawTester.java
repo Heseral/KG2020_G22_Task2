@@ -47,22 +47,20 @@ public class DrawTester extends JPanel {
             }
         }
         int snowflakeLinesAmount = 32;
-        int defaultRadius = 50;
+        int defaultRadius = 150;/*
         drawSnowflake(
                 new DDALineDrawer(pixelDrawer),
                 defaultRadius,
                 defaultRadius,
                 defaultRadius,
-                snowflakeLinesAmount,
-                Color.BLACK
+                snowflakeLinesAmount
         );
         drawSnowflake(
                 new BresenhamLineDrawer(pixelDrawer),
                 defaultRadius * 3,
                 defaultRadius,
                 defaultRadius,
-                snowflakeLinesAmount,
-                Color.RED
+                snowflakeLinesAmount
         );
         WuLineDrawer wuLineDrawer = new WuLineDrawer(pixelDrawer);
         drawSnowflake(
@@ -70,29 +68,30 @@ public class DrawTester extends JPanel {
                 defaultRadius,
                 defaultRadius * 3,
                 defaultRadius,
-                snowflakeLinesAmount,
-                Color.BLUE
-        );
+                snowflakeLinesAmount
+        );*/
 
         ArcDrawer arcDrawer = new ArcDrawer(pixelDrawer);
-        //arcDrawer.drawArc(defaultRadius * 3, defaultRadius * 3, defaultRadius, defaultRadius, 300, 250, Color.ORANGE);
-        arcDrawer.fillArc(defaultRadius * 3, defaultRadius * 3, defaultRadius, defaultRadius, 80, 10, Color.PINK);
-
+        arcDrawer.drawArc(defaultRadius + 20, defaultRadius + 20, defaultRadius, defaultRadius, 300, 250, Color.BLACK);
+        arcDrawer.fillArc(defaultRadius * 3 + 20, defaultRadius + 20, defaultRadius, defaultRadius, 80, 10, Color.BLACK);
+/*
         EllipseDrawer ellipseDrawer = new EllipseDrawer(pixelDrawer);
-        ellipseDrawer.drawEllipse(defaultRadius * 5, defaultRadius, defaultRadius, Color.BLACK);
-        ellipseDrawer.drawCircle(defaultRadius * 7, defaultRadius, defaultRadius, true, Color.MAGENTA);
-        ellipseDrawer.drawEllipse(defaultRadius * 6, defaultRadius * 3, defaultRadius * 2, defaultRadius, Color.GREEN);
-        ellipseDrawer.fillEllipse(defaultRadius * 9, defaultRadius, defaultRadius, defaultRadius, Color.DARK_GRAY);
+        ellipseDrawer.drawEllipse(defaultRadius, defaultRadius, defaultRadius, Color.BLACK);
+        ellipseDrawer.drawCircle(defaultRadius, defaultRadius * 3, defaultRadius, true, Color.MAGENTA);
+        ellipseDrawer.drawEllipse(defaultRadius, defaultRadius * 5, defaultRadius * 2, defaultRadius, Color.GREEN);
+        ellipseDrawer.fillEllipse(defaultRadius * 3, defaultRadius, defaultRadius, defaultRadius, Color.DARK_GRAY);
+
+ */
     }
 
-    private void drawSnowflake(LineDrawer lineDrawer, int centerX, int centerY, int radius, int amount, Color color) {
+    private void drawSnowflake(LineDrawer lineDrawer, int centerX, int centerY, int radius, int amount) {
         double da = 2 * Math.PI / amount;
 
         for (int i = 0; i < amount; i++) {
             double a = da * i;
             double dx = radius * Math.cos(a);
             double dy = radius * Math.sin(a);
-            lineDrawer.drawLine(centerX, centerY, centerX + (int) dx, centerY + (int) dy, color);
+            lineDrawer.drawLine(centerX, centerY, centerX + (int) dx, centerY + (int) dy, Color.BLACK);
         }
     }
 }

@@ -52,8 +52,8 @@ public class WuLineDrawer implements LineDrawer {
                             color.getGreen(),
                             color.getBlue(),
                             (int) (255 * (1 - y + (int) y))
-                    )//,
-                    //isLineVerticallyOriented
+                    ),
+                    isLineVerticallyOriented
             );
             pixelDrawer.colorPixel(
                     x,
@@ -63,8 +63,8 @@ public class WuLineDrawer implements LineDrawer {
                             color.getGreen(),
                             color.getBlue(),
                             (int) (255 * (y - (int) y))
-                    )//,
-                    //isLineVerticallyOriented
+                    ),
+                    isLineVerticallyOriented
             );
             y += slopeCoefficient;
         }
