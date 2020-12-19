@@ -42,15 +42,20 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         final int doubleBSquared = bSquared * 2;
         // КОНЕЦ: переменные для облегчения участи процессора
         int delta = doubleASquared * ((y - 1) * y) + aSquared + doubleBSquared * (1 - aSquared);
-        final int xFinalLeft;
-        final int xFinalRight;
+        int angle;
         // горизонтально-ориентированные кривые
         while (aSquared * y > bSquared * x) {
             for (int yToDraw = y0 - y; yToDraw <= y0 + y; yToDraw++) {
-                if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 + x, yToDraw)) {
+                angle = getAngle(x0, y0, x0 + x, yToDraw);
+                if ((angle == -90 || angle == 90) && isValidAngle(angle, startAngle, sweepAngle)) {
+                    pixelDrawer.colorPixel(x0 + x - 1, yToDraw, color);
+                    pixelDrawer.colorPixel(x0 - x + 1, yToDraw, color);
+                }
+                if (isValidAngle(angle, startAngle, sweepAngle)) {
                     pixelDrawer.colorPixel(x0 + x, yToDraw, color);
                 }
-                if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, yToDraw)) {
+                angle = getAngle(x0, y0, x0 - x, yToDraw);
+                if (isValidAngle(angle, startAngle, sweepAngle)) {
                     pixelDrawer.colorPixel(x0 - x, yToDraw, color);
                 }
             }
@@ -62,27 +67,29 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
             delta += doubleBSquared * (3 + x * 2);
             x++;
         }
-        xFinalLeft = x0 - x + 1;
-        xFinalRight = x0 + x - 1;
         delta = doubleBSquared * (x + 1) * x + doubleASquared * (y * (y - 2) + 1) + (1 - doubleASquared) * bSquared;
+        int i = 0;
         // вертикально-ориентированные кривые
         while (y + 1 > 0) {
-            for (int xToDraw = x0 - x; xToDraw < xFinalLeft; xToDraw++) {
-                if (isValidAngle(startAngle, sweepAngle, x0, y0, xToDraw, y0 + y)) {
-                    pixelDrawer.colorPixel(xToDraw, y0 + y, color);
+            for (int yToDraw = y0 - y; yToDraw <= y0 + y; yToDraw++) {
+                angle = getAngle(x0, y0, x0 + x, yToDraw);
+                if ((angle == -90 || angle == 90) && isValidAngle(angle, startAngle, sweepAngle)) {
+                    pixelDrawer.colorPixel(x0 + x - 1, yToDraw, color);
+                    pixelDrawer.colorPixel(x0 - x + 1, yToDraw, color);
+                    pixelDrawer.colorPixel(x0 + x, yToDraw, color);
+                    pixelDrawer.colorPixel(x0 - x, yToDraw, color);
+                    continue;
                 }
-                if (isValidAngle(startAngle, sweepAngle, x0, y0, xToDraw, y0 - y)) {
-                    pixelDrawer.colorPixel(xToDraw, y0 - y, color);
+                if (isValidAngle(angle, startAngle, sweepAngle)) {
+                    pixelDrawer.colorPixel(x0 + x, yToDraw, color);
+                }
+                angle = getAngle(x0, y0, x0 - x, yToDraw);
+                if (isValidAngle(angle, startAngle, sweepAngle)) {
+                    pixelDrawer.colorPixel(x0 - x, yToDraw, color);
                 }
             }
-            for (int xToDraw = x0 + x; xToDraw > xFinalRight; xToDraw--) {
-                if (isValidAngle(startAngle, sweepAngle, x0, y0, xToDraw, y0 + y)) {
-                    pixelDrawer.colorPixel(xToDraw, y0 + y, color);
-                }
-                if (isValidAngle(startAngle, sweepAngle, x0, y0, xToDraw, y0 - y)) {
-                    pixelDrawer.colorPixel(xToDraw, y0 - y, color);
-                }
-            }
+            if (i != 0)System.out.println(i);
+            i = 0;
 
             if (delta <= 0) {
                 x++;
@@ -173,10 +180,6 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         int x = pointX - centerX;
         int y = pointY - centerY;
 
-        if (x == 0) {
-            return y > 0 ? 180 : 0;
-        }
-
         int a = (int) (Math.atan2(x, y) * 180 / Math.PI) - 90;
 
         if ((x < 0) && (y < 0)) {
@@ -186,9 +189,12 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         return a;
     }
 
-    private boolean isValidAngle(int startAngle, int sweepAngle, int centerX, int centerY, int pointX, int pointY) {
-        int angle = getAngle(centerX, centerY, pointX, pointY);
+    private boolean isValidAngle(int angle, int startAngle, int sweepAngle) {
         return angle >= startAngle && angle <= startAngle + sweepAngle;
+    }
+
+    private boolean isValidAngle(int startAngle, int sweepAngle, int centerX, int centerY, int pointX, int pointY) {
+        return isValidAngle(getAngle(centerX, centerY, pointX, pointY), startAngle, sweepAngle);
     }
 
     public PixelDrawer getPixelDrawer() {

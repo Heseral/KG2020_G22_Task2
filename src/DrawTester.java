@@ -16,7 +16,7 @@ import java.awt.image.BufferedImage;
 public class DrawTester extends JPanel {
     // костыль. А что звучит хайпово. Джава просит перерисовку несколько раз, зачем мне мучать свой HDD и запускать эту
     // перерисовку несколько раз, при этом запуская построение .bmp картинок?
-    private boolean kostil = true;
+    private boolean kostil = false;
 
     @Override
     public void paint(Graphics basicGraphics) {
@@ -72,8 +72,8 @@ public class DrawTester extends JPanel {
         );*/
 
         ArcDrawer arcDrawer = new ArcDrawer(pixelDrawer);
-        arcDrawer.drawArc(defaultRadius + 20, defaultRadius + 20, defaultRadius, defaultRadius, 300, 250, Color.BLACK);
-        arcDrawer.fillArc(defaultRadius * 3 + 20, defaultRadius + 20, defaultRadius, defaultRadius, 80, 10, Color.BLACK);
+        //arcDrawer.drawArc(defaultRadius + 20, defaultRadius + 20, defaultRadius, defaultRadius, 85, 10, Color.BLACK);
+        arcDrawer.fillArc(defaultRadius * 3 + 20, defaultRadius + 20, defaultRadius, defaultRadius, 179, 1, Color.BLACK);
 /*
         EllipseDrawer ellipseDrawer = new EllipseDrawer(pixelDrawer);
         ellipseDrawer.drawEllipse(defaultRadius, defaultRadius, defaultRadius, Color.BLACK);
