@@ -12,7 +12,25 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         this.setPixelDrawer(pixelDrawer);
     }
 
-    public void fillArc(int x0, int y0, int width, int height, int startAngle, int endAngle, Color color) {
+    public void fillArc(int x0, int y0, int width, int height, int startAngle, int sweepAngle, Color color) {
+        if (sweepAngle == 0) {
+            return;
+        }
+        while (startAngle < -180) {
+            startAngle += 360;
+        }
+        while (startAngle > 180) {
+            startAngle -= 360;
+        }
+        if (startAngle + sweepAngle > 180) {
+            if (sweepAngle >= 360) {
+                startAngle = -180;
+                sweepAngle = 360;
+            } else {
+                fillArc(x0, y0, width, height, -180, sweepAngle - 180 + startAngle, color);
+                sweepAngle = 180 - startAngle;
+            }
+        }
         int y = height;
         int x = 0;
         // НАЧАЛО: переменные для облегчения участи процессора. Просто сохраним их, чтобы не пересчитывать каждый раз
@@ -29,10 +47,10 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         // горизонтально-ориентированные кривые
         while (aSquared * y > bSquared * x) {
             for (int yToDraw = y0 - y; yToDraw <= y0 + y; yToDraw++) {
-                if (isValidAngle(startAngle, endAngle, x0, y0, x0 + x, yToDraw)) {
+                if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 + x, yToDraw)) {
                     pixelDrawer.colorPixel(x0 + x, yToDraw, color);
                 }
-                if (isValidAngle(startAngle, endAngle, x0, y0, x0 - x, yToDraw)) {
+                if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, yToDraw)) {
                     pixelDrawer.colorPixel(x0 - x, yToDraw, color);
                 }
             }
@@ -50,18 +68,18 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         // вертикально-ориентированные кривые
         while (y + 1 > 0) {
             for (int xToDraw = x0 - x; xToDraw < xFinalLeft; xToDraw++) {
-                if (isValidAngle(startAngle, endAngle, x0, y0, xToDraw, y0 + y)) {
+                if (isValidAngle(startAngle, sweepAngle, x0, y0, xToDraw, y0 + y)) {
                     pixelDrawer.colorPixel(xToDraw, y0 + y, color);
                 }
-                if (isValidAngle(startAngle, endAngle, x0, y0, xToDraw, y0 - y)) {
+                if (isValidAngle(startAngle, sweepAngle, x0, y0, xToDraw, y0 - y)) {
                     pixelDrawer.colorPixel(xToDraw, y0 - y, color);
                 }
             }
             for (int xToDraw = x0 + x; xToDraw > xFinalRight; xToDraw--) {
-                if (isValidAngle(startAngle, endAngle, x0, y0, xToDraw, y0 + y)) {
+                if (isValidAngle(startAngle, sweepAngle, x0, y0, xToDraw, y0 + y)) {
                     pixelDrawer.colorPixel(xToDraw, y0 + y, color);
                 }
-                if (isValidAngle(startAngle, endAngle, x0, y0, xToDraw, y0 - y)) {
+                if (isValidAngle(startAngle, sweepAngle, x0, y0, xToDraw, y0 - y)) {
                     pixelDrawer.colorPixel(xToDraw, y0 - y, color);
                 }
             }
@@ -75,21 +93,24 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         }
     }
 
-    public void drawArc(int x0, int y0, int width, int height, int startAngle, int endAngle, Color color) {
+    public void drawArc(int x0, int y0, int width, int height, int startAngle, int sweepAngle, Color color) {
+        if (sweepAngle == 0) {
+            return;
+        }
         while (startAngle < -180) {
             startAngle += 360;
-        }
-        while (endAngle < -180) {
-            endAngle += 360;
         }
         while (startAngle > 180) {
             startAngle -= 360;
         }
-        while (endAngle > 180) {
-            endAngle -= 360;
-        }
-        if (startAngle >= endAngle) {
-            startAngle -= 180;
+        if (startAngle + sweepAngle > 180) {
+            if (sweepAngle >= 360) {
+                startAngle = -180;
+                sweepAngle = 360;
+            } else {
+                drawArc(x0, y0, width, height, -180, sweepAngle - 180 + startAngle, color);
+                sweepAngle = 180 - startAngle;
+            }
         }
         int y = height;
         int x = 0;
@@ -104,16 +125,16 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         int delta = doubleASquared * ((y - 1) * y) + aSquared + doubleBSquared * (1 - aSquared);
         // горизонтально-ориентированные кривые
         while (aSquared * y > bSquared * x) {
-            if (isValidAngle(startAngle, endAngle, x0, y0, x + x0, y + y0)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y + y0)) {
                 getPixelDrawer().colorPixel(x + x0, y + y0, color);
             }
-            if (isValidAngle(startAngle, endAngle, x0, y0, x + x0, y0 - y)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y0 - y)) {
                 getPixelDrawer().colorPixel(x + x0, y0 - y, color);
             }
-            if (isValidAngle(startAngle, endAngle, x0, y0, x0 - x, y + y0)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y + y0)) {
                 getPixelDrawer().colorPixel(x0 - x, y + y0, color);
             }
-            if (isValidAngle(startAngle, endAngle, x0, y0, x0 - x, y0 - y)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y0 - y)) {
                 getPixelDrawer().colorPixel(x0 - x, y0 - y, color);
             }
 
@@ -127,16 +148,16 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         delta = doubleBSquared * (x + 1) * x + doubleASquared * (y * (y - 2) + 1) + (1 - doubleASquared) * bSquared;
         // вертикально-ориентированные кривые
         while (y + 1 > 0) {
-            if (isValidAngle(startAngle, endAngle, x0, y0, x + x0, y + y0)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y + y0)) {
                 getPixelDrawer().colorPixel(x + x0, y + y0, color);
             }
-            if (isValidAngle(startAngle, endAngle, x0, y0, x + x0, y0 - y)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x + x0, y0 - y)) {
                 getPixelDrawer().colorPixel(x + x0, y0 - y, color);
             }
-            if (isValidAngle(startAngle, endAngle, x0, y0, x0 - x, y + y0)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y + y0)) {
                 getPixelDrawer().colorPixel(x0 - x, y + y0, color);
             }
-            if (isValidAngle(startAngle, endAngle, x0, y0, x0 - x, y0 - y)) {
+            if (isValidAngle(startAngle, sweepAngle, x0, y0, x0 - x, y0 - y)) {
                 getPixelDrawer().colorPixel(x0 - x, y0 - y, color);
             }
             if (delta <= 0) {
@@ -165,9 +186,9 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         return a;
     }
 
-    private boolean isValidAngle(int startAngle, int endAngle, int centerX, int centerY, int pointX, int pointY) {
+    private boolean isValidAngle(int startAngle, int sweepAngle, int centerX, int centerY, int pointX, int pointY) {
         int angle = getAngle(centerX, centerY, pointX, pointY);
-        return angle >= startAngle && angle <= endAngle;
+        return angle >= startAngle && angle <= startAngle + sweepAngle;
     }
 
     public PixelDrawer getPixelDrawer() {
@@ -184,7 +205,7 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         width /= 2;
         startAngle *= 180 / Math.PI;
         arcAngle *= 180 / Math.PI;
-        drawArc(x + width, y + height, width, height, (int) startAngle, (int) (startAngle + arcAngle), c);
+        drawArc(x + width, y + height, width, height, (int) startAngle, (int) arcAngle, c);
     }
 
     @Override
@@ -193,6 +214,6 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
         width /= 2;
         startAngle *= 180 / Math.PI;
         arcAngle *= 180 / Math.PI;
-        fillArc(x + width, y + height, width, height, (int) startAngle, (int) (startAngle + arcAngle), c);
+        fillArc(x + width, y + height, width, height, (int) startAngle, (int) arcAngle, c);
     }
 }

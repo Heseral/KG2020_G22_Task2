@@ -11,11 +11,12 @@ import task2.testing.TestArcs;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public class DrawTester extends JPanel {
-    private Point2D wuLineTestPosition = new Point(0, 0);
+    // костыль. А что звучит хайпово. Джава просит перерисовку несколько раз, зачем мне мучать свой HDD и запускать эту
+    // перерисовку несколько раз, при этом запуская построение .bmp картинок?
+    private boolean kostil = true;
 
     @Override
     public void paint(Graphics basicGraphics) {
@@ -31,17 +32,20 @@ public class DrawTester extends JPanel {
     }
 
     private void launchTests(PixelDrawer pixelDrawer) {
-        /*try {
-            TestArcs.startTest(
-                    new PFWDGI(),
-                    TestArcs.IMG_DIFF,
-                    TestArcs.TEST_ARC | TestArcs.TEST_FILL,
-                    true,
-                    "."
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+        if (!kostil) {
+            try {
+                TestArcs.startTest(
+                        new PFWDGI(),
+                        TestArcs.IMG_DIFF,
+                        TestArcs.TEST_ARC | TestArcs.TEST_FILL,
+                        true,
+                        "."
+                );
+                kostil = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         int snowflakeLinesAmount = 32;
         int defaultRadius = 50;
         drawSnowflake(
@@ -71,8 +75,8 @@ public class DrawTester extends JPanel {
         );
 
         ArcDrawer arcDrawer = new ArcDrawer(pixelDrawer);
-        arcDrawer.drawArc(defaultRadius * 3, defaultRadius * 3, defaultRadius, defaultRadius, 20, 370, Color.ORANGE);
-        arcDrawer.fillArc(defaultRadius * 3, defaultRadius * 3, defaultRadius, defaultRadius, 90, 160, Color.PINK);
+        //arcDrawer.drawArc(defaultRadius * 3, defaultRadius * 3, defaultRadius, defaultRadius, 300, 250, Color.ORANGE);
+        arcDrawer.fillArc(defaultRadius * 3, defaultRadius * 3, defaultRadius, defaultRadius, 80, 10, Color.PINK);
 
         EllipseDrawer ellipseDrawer = new EllipseDrawer(pixelDrawer);
         ellipseDrawer.drawEllipse(defaultRadius * 5, defaultRadius, defaultRadius, Color.BLACK);
