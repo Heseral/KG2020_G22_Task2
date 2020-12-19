@@ -37,7 +37,7 @@ public class DrawTester extends JPanel {
                 TestArcs.startTest(
                         new PFWDGI(),
                         TestArcs.IMG_DIFF,
-                        TestArcs.TEST_ARC | TestArcs.TEST_FILL,
+                        TestArcs.TEST_ARC,
                         true,
                         "."
                 );

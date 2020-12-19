@@ -172,7 +172,7 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
                 delta += quadrupleBSquared * x;
             }
             y--;
-            delta += doubleASquared * (3 - y * 2);
+            delta += doubleASquared * (1 - y * 2);
         }
     }
 
