@@ -69,7 +69,6 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
             x++;
         }
         delta = doubleBSquared * (x + 1) * x + doubleASquared * (y * (y - 2) + 1) + (1 - doubleASquared) * bSquared;
-        int i = 0;
         // вертикально-ориентированные кривые
         while (y + 1 > 0) {
             for (int yToDraw = y0 - y; yToDraw <= y0 + y; yToDraw++) {
@@ -89,15 +88,13 @@ public class ArcDrawer implements task2.ArcDrawer, PieFiller {
                     pixelDrawer.colorPixel(x0 - x, yToDraw, color);
                 }
             }
-            if (i != 0)System.out.println(i);
-            i = 0;
 
             if (delta <= 0) {
                 x++;
                 delta += quadrupleBSquared * x;
             }
             y--;
-            delta += doubleASquared * (3 - y * 2);
+            delta += doubleASquared * (1 - y * 2);
         }
     }
 
